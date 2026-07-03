@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>회원정보 수정</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <div id="header"></div>
+
+  <header>
+    <h1>회원정보 수정</h1>
+  </header>
+  <main>
+    <form id="modifyInfoForm" novalidate>
+      <div>
+        <label for="nickname">닉네임</label>
+        <input id="nickname" name="nickname" type="text" />
+        <p id="nicknameHelper" class="helper-text"></p>
+      </div>
+
+      <div>
+        <label for="profileImageUrl">프로필 이미지 URL</label>
+        <input id="profileImageUrl" name="profileImageUrl" type="text" />
+      </div>
+
+      <button type="submit">수정하기</button>
+    </form>
+    <button id="withdrawButton" type="button">회원 탈퇴</button>
+    <p id="message"></p>
+  </main>
+
+  <div id="successPopup" hidden>
+    수정완료
+  </div>
+
+  <script type="module" src="./js/infoModifyPage.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>게시글 상세</title>
+    <link rel="stylesheet" href="./css/style.css" />
+</head>
+
+<body>
+    <div id="header"></div>
+
+    <main>
+        <article id="postDetail"></article>
+
+        <section id="postMetaBox">
+            <button id="likeButton" type="button">
+                <strong id="likeCount">0</strong>
+                <span id="likeText">좋아요수</span>
+            </button>
+
+            <div>
+                <strong id="viewCount">0</strong>
+                <span>조회수</span>
+            </div>
+
+            <div>
+                <strong id="commentCount">0</strong>
+                <span>댓글</span>
+            </div>
+            <div id="reportBox">
+    <button id="reportOpenButton" type="button">신고하기</button>
+
+    <form id="reportForm" hidden>
+      <select id="reportReason" name="reason" required>
+        <option value="">신고 사유 선택</option>
+      </select>
+
+      <textarea
+        id="reportDescription"
+        name="description"
+        placeholder="상세 사유를 입력하세요"
+      ></textarea>
+
+      <button type="submit">신고 제출</button>
+      <button id="reportCancelButton" type="button">취소</button>
+    </form>
+  </div>
+        </section>
+        <section id="commentWriteSection">
+            <form id="commentForm">
+                <textarea id="commentBody" name="commentBody" placeholder="댓글을 남겨주세요" required></textarea>
+
+                <button type="submit">댓글 등록</button>
+            </form>
+        </section>
+        <section id="commentSection">
+            <h2>댓글</h2>
+            <div id="commentList"></div>
+        </section>
+
+        <p id="message"></p>
+    </main>
+
+    <script type="module" src="./js/postDetailPage.js"></script>
+</body>
+
+</html>

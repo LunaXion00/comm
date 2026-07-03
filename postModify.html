@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community User Test</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+
+<body>
+  <div id="header"></div>
+  <main class="auth-container">
+    <h1>게시글 수정</h1>
+
+    <form id="modifyPostForm">
+      <input id="title" name="title" type="text" placeholder="title" required />
+      <input id="postBody" name="postBody" type="text" placeholder="postBody" required />
+      <input id="postImageUrl" name="postImageUrl" type="text" placeholder="postImageUrl" />
+      <button type="submit">완료</button>
+    </form>
+
+    <p id="modifyMessage"></p>
+  </main>
+
+  <script type="module" src="./js/postModifyPage.js"></script>
+</body>
+
+</html>

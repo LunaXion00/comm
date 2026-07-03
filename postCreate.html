@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community User Test</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <div id="header"></div>
+  <main class="auth-container">
+    <h1>게시글 작성</h1>
+
+    <form id="uploadForm">
+      <input name="title" type="text" placeholder="title" required />
+      <input name="postBody" type="text" placeholder="postBody" required />
+      <input name="postImageUrl" type="text" placeholder="postImageUrl"/>
+      <button id="saveDraftButton" type="button">임시저장</button>
+      <button id="deleteDraftButton" type="button" hidden>임시저장 삭제</button>  
+      <button type="submit">완료</button>
+    </form>
+
+    <p id="draftMessage"></p>
+    <p id="uploadMessage"></p>
+    <a href="./postCreate.html"></a>
+  </main>
+
+  <script type="module" src="js/postCreatePage.js"></script>
+</body>
+</html>

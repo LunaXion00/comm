@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community User Test</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <main class="auth-container">
+    <h1>로그인</h1>
+
+    <form id="loginForm" novalidate>
+      <input name="email" type="email" placeholder="이메일" />
+      <p id="emailHelper" class="helper-text"></p>
+      <input name="password" type="password" placeholder="비밀번호" />
+      <p id="passwordHelper" class="helper-text"></p>
+      <button type="submit">로그인</button>
+    </form>
+
+    <p id="loginMessage"></p>
+    <a href="./signup.html">회원가입</a>
+  </main>
+
+  <script type="module" src="./js/loginPage.js"></script>
+</body>
+</html>
