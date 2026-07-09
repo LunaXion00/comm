@@ -235,6 +235,7 @@ button[type="submit"] {
 }
 
 @media (max-width: 560px) {
+
   main,
   .container,
   .auth-container {
@@ -253,6 +254,7 @@ button[type="submit"] {
     flex: 1;
   }
 }
+
 .site-header {
   position: sticky;
   top: 0;
@@ -409,4 +411,152 @@ button[type="submit"] {
 button[type="submit"]:disabled {
   background-color: #ACA0EB;
   opacity: 1;
+}
+.post-list-page {
+  width: min(1180px, calc(100% - 32px));
+}
+
+#postList {
+  display: block;
+  gap: 0;
+  background: #fff;
+  border-top: 1px solid #d9d9d9;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.post-list-header,
+.post-row-link {
+  display: grid;
+  grid-template-columns: 80px 80px minmax(0, 1fr) 140px 190px 72px;
+  align-items: center;
+  column-gap: 24px;
+  padding: 0 20px;
+}
+
+.post-list-header {
+  min-height: 44px;
+  border-bottom: 1px solid #d9d9d9;
+  background: #f7f8fa;
+  color: #666;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+#postList .post-row {
+  padding: 0;
+  background: #fff;
+  border: 0;
+  border-bottom: 1px solid #e2e2e2;
+  border-radius: 0;
+}
+
+#postList .post-row:last-child {
+  border-bottom: 0;
+}
+
+#postList .post-row:hover {
+  border-color: #e2e2e2;
+}
+
+.post-row-link {
+  min-height: 56px;
+}
+
+.post-row-link:hover {
+  background: #f7f8fa;
+}
+
+.post-like-cell {
+  min-height: 1px;
+  color: #e5484d;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.post-id-cell,
+.post-time-cell,
+.post-views-cell {
+  color: #111;
+  white-space: nowrap;
+}
+
+.post-title-cell {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+}
+
+.post-title-text,
+.post-author-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.post-comment-badge {
+  flex: none;
+  color: #111;
+  font-weight: 700;
+}
+
+.post-time-cell,
+.post-views-cell,
+.post-list-header span:nth-child(5),
+.post-list-header span:nth-child(6) {
+  text-align: right;
+}
+
+.post-list-empty {
+  margin: 0;
+  padding: 32px 20px;
+  color: #777;
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .post-list-header {
+    display: none;
+  }
+
+  .post-row-link {
+    grid-template-columns: 64px minmax(0, 1fr) 56px;
+    grid-template-areas:
+      "like title views"
+      "id author time";
+    row-gap: 4px;
+    column-gap: 12px;
+    min-height: 68px;
+    padding: 10px 12px;
+  }
+
+  .post-like-cell {
+    grid-area: like;
+  }
+
+  .post-id-cell {
+    grid-area: id;
+    font-size: 12px;
+    color: #777;
+  }
+
+  .post-title-cell {
+    grid-area: title;
+  }
+
+  .post-author-cell {
+    grid-area: author;
+    font-size: 12px;
+    color: #777;
+  }
+
+  .post-time-cell {
+    grid-area: time;
+    font-size: 12px;
+    color: #777;
+  }
+
+  .post-views-cell {
+    grid-area: views;
+  }
 }

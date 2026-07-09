@@ -40,12 +40,9 @@ modifyPwForm.addEventListener("submit", async (event) => {
   const newPasswordConfirm = passwordConfirmInput.value;
 
   clearHelpers(
-    emailHelper,
     passwordHelper,
-    passwordConfirmHelper,
-    nicknameHelper
+    passwordConfirmHelper
   );
-  signupMessage.textContent = "";
 
   const passwordMessage = validatePassword(newPassword);
   const passwordConfirmMessage = validatePasswordConfirm(

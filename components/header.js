@@ -9,7 +9,7 @@ export function renderHeader() {
 
   headerContainer.innerHTML = `
     <header class="site-header">
-      <a class="site-title" href="./postList.html">게시글 목록으로</a>
+      <a class="site-title" href="./postList.html">community test</a>
 
       <div class="header-profile">
         <button id="profileMenuButton" class="profile-menu-button" type="button">
