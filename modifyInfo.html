@@ -2,32 +2,55 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>회원정보 수정</title>
   <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
   <div id="header"></div>
 
-  <header>
-    <h1>회원정보 수정</h1>
-  </header>
-  <main>
-    <form id="modifyInfoForm" novalidate>
-      <div>
-        <label for="nickname">닉네임</label>
-        <input id="nickname" name="nickname" type="text" />
-        <p id="nicknameHelper" class="helper-text"></p>
+  <main class="profile-edit-page">
+    <section class="profile-edit-panel">
+      <div class="profile-edit-title">
+        <h1>회원정보 수정</h1>
+        <p>게시글과 댓글에 표시되는 닉네임과 프로필 이미지를 수정할 수 있습니다.</p>
       </div>
 
-      <div>
-        <label for="profileImageUrl">프로필 이미지 URL</label>
-        <input id="profileImageUrl" name="profileImageUrl" type="text" />
-      </div>
+      <form id="modifyInfoForm" class="profile-edit-layout" novalidate>
+        <div class="profile-edit-fields">
+          <div class="profile-field">
+            <label for="nickname">닉네임</label>
+            <input id="nickname" name="nickname" type="text" maxlength="10" />
+            <p id="nicknameHelper" class="helper-text"></p>
+          </div>
 
-      <button type="submit">수정하기</button>
-    </form>
-    <button id="withdrawButton" type="button">회원 탈퇴</button>
-    <p id="message"></p>
+          <div class="profile-field">
+            <label for="profileImageUrl">프로필 이미지 URL</label>
+            <input id="profileImageUrl" name="profileImageUrl" type="text" />
+            <p class="helper-text">이미지 주소를 입력하면 오른쪽 미리보기에 바로 반영됩니다.</p>
+          </div>
+
+          <div class="profile-actions">
+            <button type="submit">수정하기</button>
+            <button id="withdrawButton" type="button">회원 탈퇴</button>
+          </div>
+
+          <p id="message" class="message"></p>
+        </div>
+
+        <aside class="profile-preview-area">
+          <h2>프로필 사진</h2>
+
+          <div class="profile-preview-frame">
+            <img id="profilePreviewImage" src="./assets/default-profile.png" alt="프로필 이미지 미리보기" />
+          </div>
+
+          <button id="clearProfileImageButton" class="secondary-button" type="button">
+            기본 이미지로 변경
+          </button>
+        </aside>
+      </form>
+    </section>
   </main>
 
   <div id="successPopup" hidden>
