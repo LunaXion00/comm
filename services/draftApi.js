@@ -1,19 +1,13 @@
 import {request} from '../apiClient.js';
 
-export async function getCurrentDraft({accessToken}){
+export async function getCurrentDraft({}){
     return request("/api/draft-post/current", {
         method:"GET",
-        headers:{
-            Authorization: `Bearer ${accessToken}`,
-        },
     });
 }
-export async function saveDraft({accessToken, title, postBody, postImageUrl, version}){
+export async function saveDraft({ title, postBody, postImageUrl, version}){
     return request("/api/draft-post", {
         method:"POST",
-        headers:{
-            Authorization: `Bearer ${accessToken}`,
-        },
         body:{
             title: title,
             postBody : postBody,
@@ -23,12 +17,9 @@ export async function saveDraft({accessToken, title, postBody, postImageUrl, ver
     });
 }
 
-export async function updateDraft({accessToken, title, postBody, postImageUrl, version}){
+export async function updateDraft({title, postBody, postImageUrl, version}){
     return request("/api/draft-post", {
         method:"PATCH",
-        headers:{
-            Authorization: `Bearer ${accessToken}`,
-        },
         body:{
             title: title,
             postBody : postBody,
@@ -38,12 +29,9 @@ export async function updateDraft({accessToken, title, postBody, postImageUrl, v
     });
 }
 
-export async function publishDraft({accessToken, title, postBody, postImageUrl, version}){
+export async function publishDraft({ title, postBody, postImageUrl, version}){
     return request("/api/draft-post/publish", {
         method:"POST",
-        headers:{
-            Authorization: `Bearer ${accessToken}`,
-        },
         body:{
             title: title,
             postBody : postBody,
@@ -53,11 +41,8 @@ export async function publishDraft({accessToken, title, postBody, postImageUrl, 
     });
 }
 
-export async function deleteDraft({accessToken}){
+export async function deleteDraft({}){
     return request("/api/draft-post", {
         method:"DELETE",
-        headers:{
-            Authorization: `Bearer ${accessToken}`,
-        },
     });
 }

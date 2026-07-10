@@ -90,7 +90,7 @@ function renderPostItem(item) {
 async function renderPostList() {
   try {
     const result = await getPostList({
-      accessToken,
+       
     });
 
     const posts = result.data;

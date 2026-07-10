@@ -99,7 +99,6 @@ modifyInfoForm.addEventListener("submit", async (event) => {
   try {
     const result = await modifyInfo({
       userId,
-      accessToken,
       nickname: newNickname,
       profileImageUrl: newProfileImageUrl,
     });
@@ -144,7 +143,6 @@ withdrawButton.addEventListener("click", async () => {
   try {
     const result = await withdrawn({
       userId,
-      accessToken,
     });
 
     alert(result.message);

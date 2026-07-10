@@ -1,11 +1,14 @@
 const API_BASE_URL = "http://localhost:8080";
 
+const accessToken = localStorage.getItem("accessToken");
+
 export async function request(endpoint, options = {}) {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: options.method || "GET",
         headers: {
             "Content-Type": "application/json",
-            ...options.headers,
+            "Authorization": "Bearer "+ accessToken,
+            ...options.headers
         },
         body: options.body ? JSON.stringify(options.body) : undefined,
     });

@@ -126,7 +126,7 @@ modifyPwForm.addEventListener("submit", async (event) => {
   try {
     await modifyPassword({
       userId,
-      accessToken,
+      
       password: newPassword,
       passwordConfirm: newPasswordConfirm,
     });

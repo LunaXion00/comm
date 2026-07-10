@@ -1,41 +1,29 @@
 import {request} from '../apiClient.js';
 
-export async function postUpload({accessToken, title, postBody, postImageUrl = null}){
+export async function postUpload({title, postBody, postImageUrl = null}){
     return request("/api/posts", {
         method:"POST",
-        headers:{
-            Authorization: `Bearer ${accessToken}`,
-        },
         body:{
             title, postBody, postImageUrl,
         }
     });
 }
 
-export async function getPostList({accessToken}){
+export async function getPostList({}){
     return request("/api/posts",{
         method:"GET",
-        headers:{
-            Authorization: `Bearer ${accessToken}`,
-        }
     });
 }
 
-export async function getPostDetail({accessToken, postId}){
+export async function getPostDetail({postId}){
     return request(`/api/posts/${postId}`,{
         method:"GET",
-        headers:{
-            Authorization: `Bearer ${accessToken}`,
-        }
     });
 }
 
-export async function modifyPost({accessToken, postId, title, postBody, postImageUrl}){
+export async function modifyPost({ postId, title, postBody, postImageUrl}){
     return request(`/api/posts/${postId}`,{
         method:"PATCH",
-        headers:{
-            Authorization: `Bearer ${accessToken}`,
-        },
         body:{
             title:title,
             postBody: postBody,
@@ -44,39 +32,29 @@ export async function modifyPost({accessToken, postId, title, postBody, postImag
     });
 }
 
-export async function deletePost({accessToken, postId}){
+export async function deletePost({ postId}){
     return request(`/api/posts/${postId}`,{
         method:"DELETE",
-        headers:{
-            Authorization:`Bearer ${accessToken}`,
-        },
     });
 }
 
-export async function likePost({accessToken, postId}){
+export async function likePost({postId}){
     return request(`/api/posts/${postId}/likes`,{
         method:"POST",
-        headers:{
-            Authorization:`Bearer ${accessToken}`,
-        },
+
     });
 }
 
-export async function unlikePost({accessToken, postId}){
+export async function unlikePost({postId}){
     return request(`/api/posts/${postId}/likes`,{
         method:"DELETE",
-        headers:{
-            Authorization:`Bearer ${accessToken}`,
-        },
+
     });
 }
 
-export async function reportPost({accessToken, postId, reason, description}){
+export async function reportPost({postId, reason, description}){
     return request(`/api/posts/${postId}/report`,{
         method:"POST",
-        headers:{
-            Authorization:`Bearer ${accessToken}`,
-        },
         body:{
             reason:reason,
             description:description,

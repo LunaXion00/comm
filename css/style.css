@@ -142,8 +142,8 @@ button[type="submit"]:disabled {
 }
 
 .panel,
-.auth-container > form,
-.container > .panel {
+.auth-container>form,
+.container>.panel {
   margin-bottom: 20px;
   padding: 20px;
   border: 1px solid var(--color-border);
@@ -151,10 +151,10 @@ button[type="submit"]:disabled {
   background: var(--color-surface);
 }
 
-.auth-container form > button[type="submit"],
-.container form > button[type="submit"],
-.auth-form > button[type="submit"],
-.auth-form-fields > button[type="submit"] {
+.auth-container form>button[type="submit"],
+.container form>button[type="submit"],
+.auth-form>button[type="submit"],
+.auth-form-fields>button[type="submit"] {
   width: 100%;
   margin-top: 4px;
 }
@@ -205,38 +205,71 @@ button[type="submit"]:disabled {
   color: #fff;
 }
 
-.site-header {
+#header {
   position: sticky;
   top: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 72px;
-  padding: 0 24px;
+  z-index: 50;
+  width: 100%;
   border-bottom: 1px solid var(--color-border);
   background: var(--color-surface);
 }
 
+.site-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(1180px, calc(100% - 32px));
+  height: 68px;
+  margin: 0 auto;
+  padding: 0;
+  background: transparent;
+}
+
 .site-title {
-  font-size: 24px;
-  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--color-text);
+  font-size: 20px;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.site-title::before {
+  content: "";
+  width: 6px;
+  height: 24px;
+  margin-right: 10px;
+  border-radius: 2px;
+  background: var(--color-primary);
 }
 
 .header-profile {
-  position: absolute;
-  right: 24px;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .profile-menu-button {
-  width: 40px;
-  height: 40px;
-  min-height: 40px;
+  width: 42px;
+  height: 42px;
+  min-height: 42px;
   padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: #ddd;
   overflow: hidden;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 50%;
+  background: var(--color-surface-muted);
+}
+
+.profile-menu-button:hover {
+  border-color: var(--color-primary);
+  background: var(--color-surface-muted);
+}
+
+.profile-menu-button:focus-visible {
+  outline: 3px solid rgba(91, 92, 226, 0.2);
+  outline-offset: 2px;
 }
 
 .profile-menu-button img,
@@ -252,38 +285,52 @@ button[type="submit"]:disabled {
 }
 
 .profile-placeholder {
-  background: #bbb;
+  background:
+    var(--color-surface-muted) url("../assets/default-profile.png") center / cover no-repeat;
 }
 
 .profile-dropdown {
   position: absolute;
-  top: 48px;
+  top: calc(100% + 10px);
   right: 0;
-  width: 140px;
-  padding: 6px 0;
+  width: 180px;
+  padding: 6px;
   border: 1px solid var(--color-border);
-  border-radius: 6px;
+  border-radius: var(--radius);
   background: var(--color-surface);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
 }
 
 .profile-dropdown a,
 .profile-dropdown button {
-  display: block;
+  display: flex;
+  align-items: center;
   width: 100%;
-  min-height: 0;
+  min-height: 40px;
   padding: 10px 12px;
   border: 0;
-  border-radius: 0;
+  border-radius: 6px;
   background: transparent;
   color: var(--color-text);
   text-align: left;
   font-size: 14px;
+  font-weight: 600;
 }
 
 .profile-dropdown a:hover,
 .profile-dropdown button:hover {
-  background: #f0f1f3;
+  background: var(--color-surface-muted);
+}
+
+.profile-dropdown #logoutButton {
+  margin-top: 4px;
+  border-top: 1px solid var(--color-border);
+  border-radius: 0 0 6px 6px;
+  color: var(--color-danger);
+}
+
+.profile-dropdown #logoutButton:hover {
+  background: #fff1f1;
 }
 
 .auth-page {
@@ -815,8 +862,8 @@ button[type="submit"]:disabled {
   text-align: center;
 }
 
-#postMetaBox.post-detail-meta-box > button,
-#postMetaBox.post-detail-meta-box > div:not(#reportBox) {
+#postMetaBox.post-detail-meta-box>button,
+#postMetaBox.post-detail-meta-box>div:not(#reportBox) {
   display: grid;
   gap: 4px;
   padding: 18px;
@@ -918,6 +965,7 @@ button[type="submit"]:disabled {
 .post-comment-form button[type="submit"] {
   width: 100%;
 }
+
 #commentList {
   display: block;
   border-top: 1px solid var(--color-border);
@@ -1003,7 +1051,137 @@ button[type="submit"]:disabled {
   text-align: center;
 }
 
+.post-detail-heading {
+  min-width: 0;
+}
+
+.post-detail-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.post-detail-title-row h1 {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.post-detail-view-count {
+  flex: none;
+  color: var(--color-subtle);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.post-header-actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.post-header-actions button {
+  width: auto;
+  min-width: 72px;
+  margin-top: 0;
+}
+
+#reportOpenButton {
+  background: #eef0f3;
+  color: var(--color-text);
+}
+
+#reportOpenButton:hover {
+  background: #dde1e6;
+}
+
+.post-detail-like-area {
+  display: flex;
+  justify-content: center;
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border);
+}
+
+#likeButton.post-like-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: auto;
+  min-width: 132px;
+  min-height: 44px;
+  margin: 0;
+  padding: 10px 18px;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.post-like-icon {
+  color: var(--color-danger);
+  font-size: 17px;
+}
+
+#likeButton.post-like-button.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: #fff;
+}
+
+#likeButton.post-like-button.active .post-like-icon {
+  color: #fff;
+}
+
+.comment-section-title h2 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.comment-count-badge {
+  color: var(--color-primary);
+  font-size: 15px;
+}
+
+.report-modal {
+  width: min(520px, 100%);
+  padding: 28px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+}
+
+.report-modal h2 {
+  margin: 0 0 8px;
+}
+
+.report-modal-description {
+  margin: 0 0 24px;
+  color: var(--color-muted);
+  line-height: 1.6;
+}
+
+.report-modal .post-report-form {
+  display: grid;
+  gap: 16px;
+}
+
+#reportDescription {
+  min-height: 140px;
+}
+
+.report-modal .report-actions {
+  margin-top: 0;
+}
+
 @media (max-width: 720px) {
+
   main,
   .container,
   .auth-container,
@@ -1141,14 +1319,67 @@ button[type="submit"]:disabled {
   #postMetaBox.post-detail-meta-box {
     grid-template-columns: 1fr;
   }
-  .comment-item {
-  margin-left: calc(var(--comment-depth) * 18px);
-  padding-left: 10px;
-}
 
-.comment-body,
-.comment-item.is-reply .comment-body,
-.comment-edit-form {
-  margin-left: 0;
-}
+  .comment-item {
+    margin-left: calc(var(--comment-depth) * 18px);
+    padding-left: 10px;
+  }
+
+  .comment-body,
+  .comment-item.is-reply .comment-body,
+  .comment-edit-form {
+    margin-left: 0;
+  }
+
+  .site-header {
+    width: calc(100% - 24px);
+    height: 60px;
+  }
+
+  .site-title {
+    font-size: 18px;
+  }
+
+  .site-title::before {
+    height: 20px;
+    margin-right: 8px;
+  }
+
+  .profile-menu-button {
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
+
+  .profile-dropdown {
+    top: calc(100% + 8px);
+    width: 176px;
+  }
+
+  .post-detail-title-row {
+    display: block;
+  }
+
+  .post-detail-view-count {
+    display: block;
+    margin-top: 6px;
+  }
+
+  .post-header-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .post-header-actions button {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .post-detail-like-area {
+    margin-top: 28px;
+  }
+
+  .report-modal {
+    padding: 24px 20px;
+  }
 }

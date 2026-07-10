@@ -143,7 +143,7 @@ function applyDraftToForm(draft) {
 
 async function loadCurrentDraft() {
   try {
-    const result = await getCurrentDraft({ accessToken });
+    const result = await getCurrentDraft({});
 
     if (!result || !result.data) {
       return;
@@ -219,12 +219,10 @@ saveDraftButton.addEventListener("click", async () => {
   try {
     const result = draftState.exists
       ? await updateDraft({
-          accessToken,
           ...values,
           version: draftState.version,
         })
       : await saveDraft({
-          accessToken,
           ...values,
           version: draftState.version,
         });
@@ -260,7 +258,7 @@ deleteDraftButton.addEventListener("click", async () => {
   const shouldClearForm = draftState.loaded;
 
   try {
-    await deleteDraft({ accessToken });
+    await deleteDraft({ });
 
     draftState.exists = false;
     draftState.loaded = false;
@@ -299,7 +297,6 @@ uploadForm.addEventListener("submit", async (event) => {
   try {
     if (draftState.exists && draftState.loaded) {
       await publishDraft({
-        accessToken,
         ...values,
         version: draftState.version,
       });
@@ -307,7 +304,6 @@ uploadForm.addEventListener("submit", async (event) => {
       forgetHandledDraft();
     } else {
       await postUpload({
-        accessToken,
         ...values,
       });
     }

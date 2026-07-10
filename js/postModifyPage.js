@@ -89,7 +89,7 @@ async function loadPostForModify() {
 
   try {
     const result = await getPostDetail({
-      accessToken,
+       
       postId,
     });
 
@@ -137,7 +137,7 @@ modifyPostForm.addEventListener("submit", async (event) => {
 
   try {
     await modifyPost({
-      accessToken,
+       
       postId,
       ...values,
     });

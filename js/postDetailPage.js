@@ -10,25 +10,24 @@ const loginNickname = localStorage.getItem("nickname");
 
 renderHeader();
 
-const postDetail = document.querySelector("#postDetail");
+const postDetailContent = document.querySelector("#postDetailContent");
 const message = document.querySelector("#message");
 
 const likeButton = document.querySelector("#likeButton");
 const likeCount = document.querySelector("#likeCount");
 const likeText = document.querySelector("#likeText");
-const viewCount = document.querySelector("#viewCount");
 const commentCount = document.querySelector("#commentCount");
 
 const commentForm = document.querySelector("#commentForm");
 const commentBodyInput = document.querySelector("#commentBody");
 const commentSubmitButton = commentForm.querySelector('button[type="submit"]');
-
 const commentList = document.querySelector("#commentList");
 
-const reportOpenButton = document.querySelector("#reportOpenButton");
+const reportModal = document.querySelector("#reportModal");
 const reportForm = document.querySelector("#reportForm");
 const reportReason = document.querySelector("#reportReason");
 const reportDescription = document.querySelector("#reportDescription");
+const reportMessage = document.querySelector("#reportMessage");
 const reportCancelButton = document.querySelector("#reportCancelButton");
 
 var currentLiked = false;
@@ -149,7 +148,7 @@ function renderMultilineText(value) {
 }
 
 function renderProfileImage(author, size = 40) {
-  const profileImageUrl = author.profileImageUrl || "";
+  const profileImageUrl = author.profileImageUrl || "./assets/default-profile.png";
 
   if (!profileImageUrl) {
     return `<span class="detail-profile-placeholder" style="width: ${size}px; height: ${size}px;"></span>`;
@@ -211,16 +210,35 @@ function renderReportReasonOptions() {
     reportReason.appendChild(option);
   });
 }
+function setReportMessage(text) {
+  reportMessage.textContent = text;
+  reportMessage.className = text ? "message error" : "message";
+}
 
-reportOpenButton.addEventListener("click", () => {
-  reportForm.hidden = false;
-  reportOpenButton.hidden = true;
+function openReportModal() {
+  setReportMessage("");
+  reportModal.hidden = false;
+  reportReason.focus();
+}
+
+function closeReportModal() {
+  reportModal.hidden = true;
+  reportForm.reset();
+  setReportMessage("");
+}
+
+reportCancelButton.addEventListener("click", closeReportModal);
+
+reportModal.addEventListener("click", (event) => {
+  if (event.target === reportModal) {
+    closeReportModal();
+  }
 });
 
-reportCancelButton.addEventListener("click", () => {
-  reportForm.hidden = true;
-  reportOpenButton.hidden = false;
-  reportForm.reset();
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !reportModal.hidden) {
+    closeReportModal();
+  }
 });
 
 reportForm.addEventListener("submit", async (event) => {
@@ -230,7 +248,8 @@ reportForm.addEventListener("submit", async (event) => {
   const description = reportDescription.value.trim();
 
   if (!reason) {
-    message.textContent = "신고 사유를 선택해주세요.";
+    setReportMessage("신고 사유를 선택해주세요.");
+    reportReason.focus();
     return;
   }
 
@@ -242,23 +261,26 @@ reportForm.addEventListener("submit", async (event) => {
       description,
     });
 
+    closeReportModal();
     alert(result.message || "신고가 접수되었습니다.");
-
-    reportForm.hidden = true;
-    reportOpenButton.hidden = false;
-    reportForm.reset();
   } catch (error) {
-    if (error.status === 409 || error.message.includes("409")) {
-      alert("이미 신고한 게시글입니다.");
+    const errorMessage = String(error.message || "");
+
+    if (error.status === 409 || errorMessage.includes("409")) {
+      setReportMessage("이미 신고한 게시글입니다.");
       return;
     }
-    alert(error.message);
+
+    setReportMessage(errorMessage || "신고 처리 중 문제가 발생했습니다.");
   }
 });
 
-function bindPostOwnerButtons() {
+function bindPostHeaderButtons() {
+  const reportOpenButton = document.querySelector("#reportOpenButton");
   const postModifyButton = document.querySelector("#postModifyButton");
   const postDeleteButton = document.querySelector("#postDeleteButton");
+
+  reportOpenButton.addEventListener("click", openReportModal);
 
   if (postModifyButton) {
     postModifyButton.addEventListener("click", () => {
@@ -280,7 +302,7 @@ function bindPostOwnerButtons() {
           postId,
         });
 
-        alert(result.message);
+        alert(result.message || "게시글이 삭제되었습니다.");
         window.location.href = "./postList.html";
       } catch (error) {
         message.textContent = error.message;
@@ -299,17 +321,26 @@ function renderPostDetail(data) {
 
   const isOwner = loginNickname === author.nickname;
 
-  postDetail.innerHTML = `
+  postDetailContent.innerHTML = `
     <header class="post-detail-header">
-      <div>
-        <a class="post-detail-back-link" href="./postList.html">목록으로</a>
-        <h1>${escapeHtml(post.title || "제목 없음")}</h1>
+      <div class="post-detail-heading">
+        <a class="post-detail-back-link" href="./postList.html">
+          목록으로
+        </a>
+
+        <div class="post-detail-title-row">
+          <h1>${escapeHtml(post.title || "제목 없음")}</h1>
+          <span class="post-detail-view-count">
+            조회수 ${formatCount(meta.views)}
+          </span>
+        </div>
 
         <div class="post-detail-author">
           ${renderProfileImage(author, 44)}
 
           <div>
             <strong>${escapeHtml(author.nickname || "알 수 없음")}</strong>
+
             <div class="post-detail-date">
               <span>작성일 ${formatDateTime(post.createdAt)}</span>
               ${renderModifiedText(post)}
@@ -318,16 +349,24 @@ function renderPostDetail(data) {
         </div>
       </div>
 
-      ${
-        isOwner
-          ? `
-            <div class="post-owner-actions">
+      <div class="post-header-actions">
+        ${
+          isOwner
+            ? `
               <button id="postModifyButton" type="button">수정</button>
               <button id="postDeleteButton" type="button">삭제</button>
-            </div>
-          `
-          : ""
-      }
+            `
+            : ""
+        }
+
+        <button
+          id="reportOpenButton"
+          class="secondary-button"
+          type="button"
+        >
+          신고하기
+        </button>
+      </div>
     </header>
 
     ${renderPostImage(post.postImageUrl)}
@@ -337,15 +376,10 @@ function renderPostDetail(data) {
     </section>
   `;
 
-  likeCount.textContent = formatCount(currentLikes);
-  viewCount.textContent = formatCount(meta.views);
-  commentCount.textContent = formatCount(meta.comments);
+  commentCount.textContent = `[${formatCount(meta.comments)}]`;
 
   updateLikeButton();
-
-  if (isOwner) {
-    bindPostOwnerButtons();
-  }
+  bindPostHeaderButtons();
 }
 
 async function loadPostDetail() {

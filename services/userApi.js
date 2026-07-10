@@ -18,22 +18,16 @@ export async function login({email, password}){
     });
 }
 
-export async function logout(accessToken){
+export async function logout(){
     return request("/api/users/logout",{
         method:"POST",
-        headers:{
-            Authorization: `Bearer ${accessToken}`,
-        },
     });
 }
 
 // PATCH {userId}/info, header에 token, body에 nickname, profileImageUrl
-export async function modifyInfo({userId, accessToken, nickname, profileImageUrl}){
+export async function modifyInfo({userId, nickname, profileImageUrl}){
     return request(`/api/users/${userId}/info`, {
         method:"PATCH",
-        headers:{
-            Authorization : `Bearer ${accessToken}`,
-        },
         body:{
             nickname, profileImageUrl
         },
@@ -41,12 +35,9 @@ export async function modifyInfo({userId, accessToken, nickname, profileImageUrl
 }
 
 // PATCH {userId}/password, header에 token, body에 password, passwordConfirm
-export async function modifyPassword({userId, accessToken, password, passwordConfirm}){
+export async function modifyPassword({userId, password, passwordConfirm}){
     return request(`/api/users/${userId}/password`, {
         method:"PATCH",
-        headers:{
-            Authorization: `Bearer ${accessToken}`,
-        },
         body:{
             password, passwordConfirm
         },
@@ -54,11 +45,8 @@ export async function modifyPassword({userId, accessToken, password, passwordCon
 }
 
 //DELETE {userId}, header에 token
-export async function withdrawn({userId, accessToken}){
+export async function withdrawn({userId}){
     return request(`/api/users/${userId}`,{
         method:"DELETE",
-        headers:{
-            Authorization: `Bearer ${accessToken}`
-        },
     });
 }
