@@ -135,14 +135,66 @@ commentList.addEventListener("click", async (event) => {
   }
 });
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function renderMultilineText(value) {
+  return escapeHtml(value).replaceAll("\n", "<br>");
+}
+
+function renderProfileImage(author, size = 40) {
+  const profileImageUrl = author.profileImageUrl || "";
+
+  if (!profileImageUrl) {
+    return `<span class="detail-profile-placeholder" style="width: ${size}px; height: ${size}px;"></span>`;
+  }
+
+  return `
+    <img
+      class="detail-profile-image"
+      src="${escapeHtml(profileImageUrl)}"
+      alt="프로필 이미지"
+      width="${size}"
+      height="${size}"
+    />
+  `;
+}
+
+function renderModifiedText(post) {
+  if (!post.modified || !post.modifiedAt) {
+    return "";
+  }
+
+  return `<span>수정일 ${formatDateTime(post.modifiedAt)}</span>`;
+}
+
+function renderPostImage(postImageUrl) {
+  if (!postImageUrl) {
+    return "";
+  }
+
+  return `
+    <figure class="post-detail-image-wrap">
+      <img src="${escapeHtml(postImageUrl)}" alt="게시글 이미지" />
+    </figure>
+  `;
+}
+
 
 function updateLikeButton() {
   likeCount.textContent = formatCount(currentLikes);
+
   if (currentLiked) {
     likeText.textContent = "좋아요 취소";
     likeButton.classList.add("active");
   } else {
-    likeText.textContent = "좋아요수";
+    likeText.textContent = "좋아요";
     likeButton.classList.remove("active");
   }
 }
@@ -208,75 +260,87 @@ function bindPostOwnerButtons() {
   const postModifyButton = document.querySelector("#postModifyButton");
   const postDeleteButton = document.querySelector("#postDeleteButton");
 
-  postModifyButton.addEventListener("click", () => {
-    window.location.href = `./postModify.html?postId=${postId}`;
-  });
+  if (postModifyButton) {
+    postModifyButton.addEventListener("click", () => {
+      window.location.href = `./postModify.html?postId=${postId}`;
+    });
+  }
 
-  postDeleteButton.addEventListener("click", async () => {
-    const confirmed = confirm("게시글을 삭제하시겠습니까?");
+  if (postDeleteButton) {
+    postDeleteButton.addEventListener("click", async () => {
+      const confirmed = confirm("게시글을 삭제하시겠습니까?");
 
-    if (!confirmed) {
-      return;
-    }
+      if (!confirmed) {
+        return;
+      }
 
-    try {
-      const result = await deletePost({
-        accessToken,
-        postId,
-      });
+      try {
+        const result = await deletePost({
+          accessToken,
+          postId,
+        });
 
-      alert(result.message);
-      window.location.href = "./postList.html";
-    } catch (error) {
-      message.textContent = error.message;
-    }
-  });
+        alert(result.message);
+        window.location.href = "./postList.html";
+      } catch (error) {
+        message.textContent = error.message;
+      }
+    });
+  }
 }
 
 function renderPostDetail(data) {
-  const author = data.author;
-  const post = data.post;
-  const meta = data.meta;
+  const author = data.author || {};
+  const post = data.post || {};
+  const meta = data.meta || {};
 
-  currentLiked = meta.liked;
-  currentLikes = meta.likes;
+  currentLiked = Boolean(meta.liked);
+  currentLikes = Number(meta.likes) || 0;
 
   const isOwner = loginNickname === author.nickname;
 
   postDetail.innerHTML = `
-    <div class="post-title-row">
-      <h1>${post.title}</h1>
+    <header class="post-detail-header">
+      <div>
+        <a class="post-detail-back-link" href="./postList.html">목록으로</a>
+        <h1>${escapeHtml(post.title || "제목 없음")}</h1>
 
-      ${isOwner
-      ? `
+        <div class="post-detail-author">
+          ${renderProfileImage(author, 44)}
+
+          <div>
+            <strong>${escapeHtml(author.nickname || "알 수 없음")}</strong>
+            <div class="post-detail-date">
+              <span>작성일 ${formatDateTime(post.createdAt)}</span>
+              ${renderModifiedText(post)}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      ${
+        isOwner
+          ? `
             <div class="post-owner-actions">
               <button id="postModifyButton" type="button">수정</button>
               <button id="postDeleteButton" type="button">삭제</button>
             </div>
           `
-      : ""
-    }
-    </div>
+          : ""
+      }
+    </header>
 
-    <section>
-      <p>작성자: ${author.nickname}</p>
-      ${author.profileImageUrl
-      ? `<img src="${author.profileImageUrl}" alt="프로필 이미지" width="40" height="40" />`
-      : ""
-    }
-      <p>작성일: ${formatDateTime(post.createdAt)}</p>
-      <p>조회수: ${formatCount(meta.views)}</p>
-      <p>댓글: ${formatCount(meta.comments)}</p>
-    </section>
+    ${renderPostImage(post.postImageUrl)}
 
-    <section>
-      <p>${post.postBody}</p>
+    <section class="post-detail-body">
+      ${renderMultilineText(post.postBody || "")}
     </section>
   `;
 
   likeCount.textContent = formatCount(currentLikes);
   viewCount.textContent = formatCount(meta.views);
   commentCount.textContent = formatCount(meta.comments);
+
   updateLikeButton();
 
   if (isOwner) {
@@ -303,9 +367,12 @@ function showCommentEditForm(commentItem, commentId) {
 
   bodyElement.outerHTML = `
     <div class="comment-edit-form">
-      <textarea class="comment-edit-input">${currentBody}</textarea>
-      <button type="button" class="comment-save-button">저장</button>
-      <button type="button" class="comment-cancel-button">취소</button>
+      <textarea class="comment-edit-input">${escapeHtml(currentBody)}</textarea>
+
+      <div class="comment-actions">
+        <button type="button" class="comment-save-button">저장</button>
+        <button type="button" class="comment-cancel-button">취소</button>
+      </div>
     </div>
   `;
 }
@@ -354,42 +421,65 @@ async function handleDeleteComment(commentId) {
   }
 }
 
+const MAX_COMMENT_DEPTH = 3;
+
+function getCommentDepth(comment) {
+  const depth = Number(comment.depth ?? comment.commentDepth ?? 0);
+
+  if (!Number.isFinite(depth) || depth < 0) {
+    return 0;
+  }
+
+  return Math.min(depth, MAX_COMMENT_DEPTH);
+}
+
 function renderCommentList(data) {
   if (!data || data.length === 0) {
-    commentList.textContent = "댓글이 없습니다.";
+    commentList.innerHTML = `<p class="comment-empty">댓글이 없습니다.</p>`;
     return;
   }
 
   commentList.innerHTML = data
     .map((item) => {
-      const author = item.author;
-      const comment = item.comment;
+      const author = item.author || {};
+      const comment = item.comment || {};
       const isOwner = author.nickname === loginNickname;
       const isDeleted = comment.deleted === true;
       const canModify = isOwner && !isDeleted;
+      const depth = getCommentDepth(comment);
+      const replyClass = depth > 0 ? "is-reply" : "";
+      const profileSize = depth > 0 ? 24 : 28;
 
       return `
-        <article class="comment-item" data-comment-id="${comment.commentId}">
-          <div>
-            ${author.profileImageUrl
-          ? `<img src="${author.profileImageUrl}" alt="프로필 이미지" width="32" height="32" />`
-          : ""
-        }
-            <strong>${author.nickname}</strong>
-          </div>
+        <article
+          class="comment-item ${isDeleted ? "is-deleted" : ""} ${replyClass}"
+          style="--comment-depth: ${depth};"
+          data-comment-id="${escapeHtml(comment.commentId || "")}"
+          data-comment-depth="${depth}"
+        >
+          <header class="comment-header">
+            <div class="comment-author">
+              ${renderProfileImage(author, profileSize)}
 
-          <p class="comment-body">${comment.commentBody}</p>
-          <small>${formatDateTime(comment.createdAt) || ""}</small>
+              <div>
+                <strong>${escapeHtml(author.nickname || "알 수 없음")}</strong>
+                <small>${formatDateTime(comment.createdAt) || ""}</small>
+              </div>
+            </div>
 
-          ${canModify
-          ? `
-                <div class="comment-actions">
-                  <button type="button" class="comment-edit-button">수정</button>
-                  <button type="button" class="comment-delete-button">삭제</button>
-                </div>
-              `
-          : ""
-        }
+            ${
+              canModify
+                ? `
+                  <div class="comment-actions">
+                    <button type="button" class="comment-edit-button">수정</button>
+                    <button type="button" class="comment-delete-button">삭제</button>
+                  </div>
+                `
+                : ""
+            }
+          </header>
+
+          <p class="comment-body">${renderMultilineText(comment.commentBody || "")}</p>
         </article>
       `;
     })

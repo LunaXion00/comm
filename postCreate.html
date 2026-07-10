@@ -3,28 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Community User Test</title>
+  <title>게시글 작성</title>
   <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
   <div id="header"></div>
-  <main class="auth-container">
-    <h1>게시글 작성</h1>
 
-    <form id="uploadForm">
-      <input name="title" type="text" placeholder="title" required />
-      <input name="postBody" type="text" placeholder="postBody" required />
-      <input name="postImageUrl" type="text" placeholder="postImageUrl"/>
-      <button id="saveDraftButton" type="button">임시저장</button>
-      <button id="deleteDraftButton" type="button" hidden>임시저장 삭제</button>  
-      <button type="submit">완료</button>
-    </form>
+  <main class="post-create-page">
+    <section class="post-create-panel">
+      <div class="post-create-title">
+        <h1>게시글 작성</h1>
+        <p>제목과 내용을 입력한 뒤 게시하거나, 나중에 이어서 작성할 수 있도록 임시저장할 수 있습니다.</p>
+      </div>
 
-    <p id="draftMessage"></p>
-    <p id="uploadMessage"></p>
-    <a href="./postCreate.html"></a>
+      <form id="uploadForm" class="post-create-layout" novalidate>
+        <div class="post-editor-fields">
+          <div class="post-field">
+            <label for="title">제목</label>
+            <input id="title" name="title" type="text" placeholder="제목을 입력해주세요." />
+            <p id="titleHelper" class="helper-text"></p>
+          </div>
+
+          <div class="post-field">
+            <label for="postBody">내용</label>
+            <textarea id="postBody" name="postBody" class="post-body-input" placeholder="내용을 입력해주세요."></textarea>
+            <p id="postBodyHelper" class="helper-text"></p>
+          </div>
+
+          <div class="post-field">
+            <label for="postImageUrl">이미지 URL</label>
+            <input id="postImageUrl" name="postImageUrl" type="text" placeholder="선택 사항입니다." />
+            <p class="helper-text">이미지가 필요 없다면 비워두면 됩니다.</p>
+          </div>
+
+          <p id="uploadMessage" class="message"></p>
+        </div>
+
+        <aside class="post-create-side-panel">
+          <h2>작성 상태</h2>
+          <p id="draftMessage" class="message">작성 중인 글을 임시저장할 수 있습니다.</p>
+
+          <div class="post-create-actions">
+            <button id="saveDraftButton" type="button">임시저장</button>
+            <button id="deleteDraftButton" type="button" hidden>임시저장 삭제</button>
+            <button type="submit">게시하기</button>
+            <a class="secondary-link" href="./postList.html">목록으로 돌아가기</a>
+          </div>
+        </aside>
+      </form>
+    </section>
   </main>
 
-  <script type="module" src="js/postCreatePage.js"></script>
+  <div id="draftLoadModal" class="modal-backdrop" hidden>
+    <section class="draft-load-modal" role="dialog" aria-modal="true" aria-labelledby="draftLoadTitle">
+      <h2 id="draftLoadTitle">임시저장 글 발견</h2>
+      <p>
+        <strong id="draftUpdatedAtText"></strong>에 작성한 임시저장 글이 있습니다.
+        불러오겠습니까?
+      </p>
+
+      <div class="modal-actions">
+        <button id="loadDraftButton" type="button">불러오기</button>
+        <button id="cancelDraftLoadButton" class="secondary-button" type="button">취소</button>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="./js/postCreatePage.js"></script>
 </body>
 </html>

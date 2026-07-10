@@ -1,29 +1,58 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Community User Test</title>
+  <title>게시글 수정</title>
   <link rel="stylesheet" href="./css/style.css" />
 </head>
-
 <body>
   <div id="header"></div>
-  <main class="auth-container">
-    <h1>게시글 수정</h1>
 
-    <form id="modifyPostForm">
-      <input id="title" name="title" type="text" placeholder="title" required />
-      <input id="postBody" name="postBody" type="text" placeholder="postBody" required />
-      <input id="postImageUrl" name="postImageUrl" type="text" placeholder="postImageUrl" />
-      <button type="submit">완료</button>
-    </form>
+  <main class="post-create-page">
+    <section class="post-create-panel">
+      <div class="post-create-title">
+        <h1>게시글 수정</h1>
+        <p>기존 게시글의 제목, 내용, 이미지 URL을 수정할 수 있습니다.</p>
+      </div>
 
-    <p id="modifyMessage"></p>
+      <form id="modifyPostForm" class="post-create-layout" novalidate>
+        <div class="post-editor-fields">
+          <div class="post-field">
+            <label for="title">제목</label>
+            <input id="title" name="title" type="text" placeholder="제목을 입력해주세요." />
+            <p id="titleHelper" class="helper-text"></p>
+          </div>
+
+          <div class="post-field">
+            <label for="postBody">내용</label>
+            <textarea id="postBody" name="postBody" class="post-body-input" placeholder="내용을 입력해주세요."></textarea>
+            <p id="postBodyHelper" class="helper-text"></p>
+          </div>
+
+          <div class="post-field">
+            <label for="postImageUrl">이미지 URL</label>
+            <input id="postImageUrl" name="postImageUrl" type="text" placeholder="선택 사항입니다." />
+            <p class="helper-text">이미지가 필요 없다면 비워두면 됩니다.</p>
+          </div>
+
+          <p id="modifyMessage" class="message"></p>
+        </div>
+
+        <aside class="post-create-side-panel">
+          <h2>수정 상태</h2>
+          <p id="modifyStatusMessage" class="message">기존 게시글을 불러오는 중입니다.</p>
+
+          <div class="post-create-actions">
+            <button type="submit">수정 완료</button>
+            <a id="postDetailLink" class="secondary-link" href="./postList.html">상세로 돌아가기</a>
+            <a class="secondary-link" href="./postList.html">목록으로 돌아가기</a>
+          </div>
+        </aside>
+      </form>
+    </section>
   </main>
 
   <script type="module" src="./js/postModifyPage.js"></script>
 </body>
-
 </html>

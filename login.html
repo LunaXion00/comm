@@ -3,23 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Community User Test</title>
+  <title>로그인</title>
   <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-  <main class="auth-container">
-    <h1>로그인</h1>
+  <main class="auth-page">
+    <section class="auth-panel">
+      <div class="auth-title">
+        <h1>로그인</h1>
+        <p>계정으로 로그인하고 커뮤니티를 이용해보세요.</p>
+      </div>
 
-    <form id="loginForm" novalidate>
-      <input name="email" type="email" placeholder="이메일" />
-      <p id="emailHelper" class="helper-text"></p>
-      <input name="password" type="password" placeholder="비밀번호" />
-      <p id="passwordHelper" class="helper-text"></p>
-      <button type="submit">로그인</button>
-    </form>
+      <form id="loginForm" class="auth-form" novalidate>
+        <div class="auth-field">
+          <label for="loginEmail">이메일</label>
+          <input id="loginEmail" name="email" type="email" autocomplete="email" />
+          <p id="emailHelper" class="helper-text"></p>
+        </div>
 
-    <p id="loginMessage"></p>
-    <a href="./signup.html">회원가입</a>
+        <div class="auth-field">
+          <label for="loginPassword">비밀번호</label>
+          <div class="password-input-row">
+            <input id="loginPassword" name="password" type="password" autocomplete="current-password" />
+            <button type="button" class="password-toggle-button" data-toggle-password="loginPassword">
+              보기
+            </button>
+          </div>
+          <p id="passwordHelper" class="helper-text"></p>
+        </div>
+
+        <button type="submit">로그인</button>
+      </form>
+
+      <p id="loginMessage" class="message"></p>
+
+      <p class="auth-switch">
+        아직 계정이 없나요?
+        <a href="./signup.html">회원가입</a>
+      </p>
+    </section>
   </main>
 
   <script type="module" src="./js/loginPage.js"></script>
