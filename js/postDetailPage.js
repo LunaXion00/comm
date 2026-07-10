@@ -47,7 +47,6 @@ likeButton.addEventListener("click", async () => {
   try {
     if (currentLiked) {
       await unlikePost({
-        accessToken,
         postId,
       });
 
@@ -55,7 +54,6 @@ likeButton.addEventListener("click", async () => {
       currentLikes -= 1;
     } else {
       await likePost({
-        accessToken,
         postId,
       });
 
@@ -88,7 +86,6 @@ commentForm.addEventListener("submit", async (event) => {
 
   try {
     await postComment({
-      accessToken: accessToken,
       postId: postId,
       commentBody: commentBody,
     });
@@ -255,7 +252,6 @@ reportForm.addEventListener("submit", async (event) => {
 
   try {
     const result = await reportPost({
-      accessToken,
       postId,
       reason,
       description,
@@ -298,7 +294,6 @@ function bindPostHeaderButtons() {
 
       try {
         const result = await deletePost({
-          accessToken,
           postId,
         });
 
@@ -385,7 +380,6 @@ function renderPostDetail(data) {
 async function loadPostDetail() {
   try {
     const result = await getPostDetail({
-      accessToken,
       postId,
     });
 
@@ -422,7 +416,6 @@ async function handleModifyComment(commentItem, commentId) {
 
   try {
     await modifyComment({
-      accessToken,
       postId,
       commentId,
       commentBody,
@@ -443,7 +436,6 @@ async function handleDeleteComment(commentId) {
 
   try {
     await deleteComment({
-      accessToken: accessToken,
       postId: postId,
       commentId: commentId,
     });
@@ -523,7 +515,6 @@ function renderCommentList(data) {
 async function loadCommentList() {
   try {
     const result = await getCommentList({
-      accessToken,
       postId,
     });
     renderCommentList(result.data);

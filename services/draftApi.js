@@ -1,6 +1,6 @@
 import {request} from '../apiClient.js';
 
-export async function getCurrentDraft({}){
+export async function getCurrentDraft(){
     return request("/api/draft-post/current", {
         method:"GET",
     });
@@ -41,7 +41,7 @@ export async function publishDraft({ title, postBody, postImageUrl, version}){
     });
 }
 
-export async function deleteDraft({}){
+export async function deleteDraft(){
     return request("/api/draft-post", {
         method:"DELETE",
     });

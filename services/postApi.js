@@ -32,7 +32,7 @@ export async function modifyPost({ postId, title, postBody, postImageUrl}){
     });
 }
 
-export async function deletePost({ postId}){
+export async function deletePost({postId}){
     return request(`/api/posts/${postId}`,{
         method:"DELETE",
     });

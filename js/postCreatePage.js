@@ -143,7 +143,7 @@ function applyDraftToForm(draft) {
 
 async function loadCurrentDraft() {
   try {
-    const result = await getCurrentDraft({});
+    const result = await getCurrentDraft();
 
     if (!result || !result.data) {
       return;
@@ -258,7 +258,7 @@ deleteDraftButton.addEventListener("click", async () => {
   const shouldClearForm = draftState.loaded;
 
   try {
-    await deleteDraft({ });
+    await deleteDraft();
 
     draftState.exists = false;
     draftState.loaded = false;
